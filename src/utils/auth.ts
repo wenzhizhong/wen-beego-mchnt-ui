@@ -57,6 +57,12 @@ export function doRefreshToken(data) {
   });
 }
 
+/** 获取authorized-token */
+export async function getAuthorizedToken() {
+  let tmpAuthInfo = await getToken()
+  let authInfo = tmpAuthInfo && tmpAuthInfo as DataInfo
+  return authInfo && authInfo.accessToken? formatToken( authInfo.accessToken ):"";
+}
 /** 获取`token` */
 export async function getToken() {
 
@@ -172,7 +178,7 @@ export const formatToken = (token: string): string => {
 
 /** 是否有按钮级别的权限（根据登录接口返回的`permissions`字段进行判断）*/
 export const hasPerms = (value: string | Array<string>): boolean => {
-  if(value == 'admin_mchnt:system-dept:del'){
+  if(value == 'admin_plat:system-dept:del'){
     console.log('value', value)
   }
   if (!value) return false;

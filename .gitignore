@@ -24,3 +24,9 @@ tests/**/coverage/
 tsconfig.tsbuildinfo
 
 log*
+src/api/generateForm.ts
+src/views/system/generateForm/form.vue
+src/views/system/generateForm/index.vue
+src/views/system/generateForm/utils/hook.tsx
+src/views/system/generateForm/utils/rule.ts
+src/views/system/generateForm/utils/types.ts

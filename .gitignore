@@ -23,7 +23,7 @@ tests/**/coverage/
 .vscode
 tsconfig.tsbuildinfo
 
-log*
+/log*
 src/api/generateForm.ts
 src/views/system/generateForm/form.vue
 src/views/system/generateForm/index.vue

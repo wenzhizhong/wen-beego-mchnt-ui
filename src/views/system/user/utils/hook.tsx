@@ -28,6 +28,7 @@ import {
   addUser,
   editUser,
   delUser,
+  resetPassword,
 } from "@/api/system";
 import {
   ElForm,
@@ -51,6 +52,8 @@ import { useUserStoreHook } from "@/store/modules/user";
 const { unit_gender_map, unit_user_source_map, unit_card_type_map, unit_user_profile_map } = useDbModelParamsStoreHook();
 
 export function useUser(tableRef: Ref, treeRef: Ref) {
+  const { default_unit_id: tmpDefaultUnitId } = useUserStoreHook();
+  const default_unit_id = ref(tmpDefaultUnitId);
   const form = reactive({
     // 部门树的id
     deptId: "",
@@ -564,14 +567,25 @@ export function useUser(tableRef: Ref, treeRef: Ref) {
       beforeSure: done => {
         ruleFormRef.value.validate(valid => {
           if (valid) {
-            // 表单规则校验通过
-            message(`已成功重置 ${row.name} 用户的密码`, {
-              type: "success"
-            });
-            console.log(pwdForm.newPwd);
-            // 根据实际业务使用pwdForm.newPwd和row里的某些字段去调用重置用户密码接口即可
-            done(); // 关闭弹框
-            onSearch(); // 刷新表格数据
+            let postData = {
+              id: row.id,
+              password: pwdForm.newPwd,
+            }
+            resetPassword(postData).then(res =>{
+              if (res && res.code === 200){
+                // 表单规则校验通过
+                message(`已成功重置 ${row.name} 用户的密码`, {
+                  type: "success"
+                });
+                // 根据实际业务使用pwdForm.newPwd和row里的某些字段去调用重置用户密码接口即可
+                done(); // 关闭弹框
+                onSearch(); // 刷新表格数据
+              }else{
+                message(`重置密码失败：`+(res.message), {
+                  type: "error"
+                });
+              }
+            })
           }
         });
       }
